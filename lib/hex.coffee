@@ -1,11 +1,12 @@
 url = require 'url'
 fs = require 'fs-plus'
 HexView = null
+InspectorView = null
 
 module.exports =
   configDefaults:
     bytesPerLine: 16
-    
+
   activate: ->
     atom.project.registerOpener (uriToOpen) ->
       {protocol, host, pathname} = url.parse(uriToOpen)
@@ -22,3 +23,8 @@ module.exports =
           atom.workspaceView.open("hex://#{uri}")
         else
           console.warn "File (#{uri}) does not exists"
+
+    atom.workspaceView.command 'hex:toggle-inspector', ->
+      console.log("open inspector")
+      InspectorView ?= require './inspector-view'
+      new InspectorView()
